@@ -51,7 +51,13 @@ for relative_path in HTML_FILES:
     require(parser.has_noindex, f"{relative_path} must remain noindex before launch")
     require("<script" not in text.lower(), f"{relative_path} must not load tracking or scripts")
 
+    allowed_external_links = {
+        "mailto:shoshanadean@gmail.com",
+        "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/",
+    }
     for link in parser.links:
+        if link in allowed_external_links:
+            continue
         parsed = urlparse(link)
         require(not parsed.scheme and not parsed.netloc, f"{relative_path} has external link: {link}")
         target = link.split("#", 1)[0]
@@ -68,7 +74,7 @@ for phrase in ("no account", "third-party tracking", "Keychain", "iCloud Key-Val
 for phrase in ("not a medical service or treatment", "Stop using it immediately", "one-time", "not a subscription"):
     require(phrase.lower() in terms.lower(), f"terms.html is missing required topic: {phrase}")
 
-for phrase in ("supported physical iPhone", "Stop the session immediately", "Restore Purchase", "Support email pending"):
+for phrase in ("supported physical iPhone", "Stop the session immediately", "Restore Purchase", "mailto:shoshanadean@gmail.com"):
     require(phrase.lower() in support.lower(), f"support.html is missing required topic: {phrase}")
 
 robots = (ROOT / "robots.txt").read_text(encoding="utf-8")
