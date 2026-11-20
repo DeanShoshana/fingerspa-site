@@ -47,6 +47,7 @@ for relative_path in HTML_FILES:
 
     require(parser.lang == "en", f"{relative_path} must declare English")
     require(parser.has_title, f"{relative_path} needs a title")
+    require("Working Name" not in text, f"{relative_path} still uses the provisional name")
     require(parser.has_viewport, f"{relative_path} needs a viewport meta tag")
     require(parser.has_noindex, f"{relative_path} must remain noindex before launch")
     require("<script" not in text.lower(), f"{relative_path} must not load tracking or scripts")
